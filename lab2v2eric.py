@@ -66,10 +66,11 @@ def getTable(prev_table,s,k):
 
 s = 1000
 prev_table = getSingletonTable(lib,s)
-print(len(prev_table))
+
+print(prev_table)
 prev_table = getTable(prev_table,s,2)
-print(len(prev_table))
+print(prev_table)
 prev_table = getTable(prev_table,s,3)
-print(len(prev_table))
+print(prev_table)
 
 

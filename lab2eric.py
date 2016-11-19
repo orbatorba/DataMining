@@ -1,24 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import itertools
 lib = []
-lib2 = []
 for line in open('T10I4D100K.dat', 'r'):
     item = line.rstrip()
     temp = []
-    temp2 = set([])
     for j in item.split(" "):
     	temp.append(int(j))
-    	temp2.add(int(j))
     lib.append(temp)
-    lib2.append(temp2)
-
-count = 0
-for bag in lib2:
-	if 39 in bag and 704 in bag and 825 in bag:
-		count+=1
-
-print(count)
-
-
 
 
 
@@ -45,6 +34,9 @@ def getItemList(prev_table_keyset):
 	return list(itemlist)
 
 
+
+
+
 def getTable(prev_table,s,k):
 	table = {}
 	itemList = getItemList(prev_table.keys())
@@ -64,13 +56,67 @@ def getTable(prev_table,s,k):
 			del table[key]
 	return table
 
-s = 1000
-prev_table = getSingletonTable(lib,s)
 
+
+
+def getTable2(prev_table,s,k):
+	table = {}
+	itemList = set(getItemList(prev_table.keys()))
+	counter = 0
+	for bag in lib:
+		current = list(itemList.intersection(bag))
+		current.sort()
+		counter+=1
+		if counter%1000==0:
+			print(counter)
+		current_permutations=(list(itertools.combinations(current,k)))
+		for key in current_permutations:
+			if checkPerm(key,prev_table,k):
+				if key in table:
+					table[key]+=1
+				else:
+					table[key]=1
+	for key in table.keys():
+		if table[key]<s:
+			del table[key]
+	return table
+
+
+
+
+def checkPerm(element,prev_table,k):
+	check = list(itertools.combinations(list(element),k-1))
+	for key in check:
+		if key not in prev_table:
+			return False
+	return True
+
+
+s = 100
+prev_table = getSingletonTable(lib,s)
 print(prev_table)
-prev_table = getTable(prev_table,s,2)
+prev_table = getTable2(prev_table,s,2)
 print(prev_table)
-prev_table = getTable(prev_table,s,3)
+prev_table = getTable2(prev_table,s,3)
 print(prev_table)
+prev_table = getTable2(prev_table,s,4)
+print(prev_table)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
